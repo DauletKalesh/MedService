@@ -9,7 +9,7 @@ RUN pip install --upgrade pip
 COPY . /usr/src/app/
 RUN pip install -r req.txt
 
-# COPY . /usr/src/app/
+#COPY . /usr/src/app/
 
 EXPOSE 8000
 
