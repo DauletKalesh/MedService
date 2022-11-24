@@ -128,3 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /data/
+*/__pycache__/
+*/migrations/

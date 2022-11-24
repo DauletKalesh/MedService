@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'auth_',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medservice.wsgi.application'
 
-
+AUTH_USER_MODEL = 'auth_.AdvancedUser'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
