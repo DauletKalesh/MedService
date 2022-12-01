@@ -1,10 +1,17 @@
-from django.shortcuts import render
 from rest_framework import generics, mixins, viewsets, status
 from rest_framework.views import Response, APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from .serializers import AdvancedUserSerializer
+from django.contrib.auth.hashers import check_password, make_password
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from rest_framework_jwt.views import JSONWebTokenAPIView
+from rest_framework_jwt.settings import api_settings
+from datetime import datetime
+from django.conf import settings
 from .models import *
 # Create your views here.
+
+jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 class AdvancedUserViewSet(viewsets.ViewSet):
     permission_classes = (AllowAny,)
@@ -19,3 +26,49 @@ class AdvancedUserViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # def retrieve(self, request, id):
     #     ser
+
+class LoginView(JSONWebTokenAPIView):
+    serializer_class = JSONWebTokenSerializer
+
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        print(email, password)
+        try:
+            user = AdvancedUser.objects.get(email=email)
+        except:
+            return Response({'message': 'Wrong email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+        if user:
+            if user.is_blocked:
+                return Response(
+                    {'message': 'Account is blocked. Contact with admin to unblock.'}, 
+                    status=401)
+            if user.login_attempts >= 3:
+                user.is_blocked = True
+                user.save()
+                return Response(
+                    {'message': 'Too many attempts, account is blocked. Contact with admin.'}, 
+                    status=401)
+            if not check_password(password, user.password):
+                user.login_attempts += 1
+                user.save()
+                return Response({'message': 'Wrong email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+            serializer = self.get_serializer(data=request.data)
+
+            if serializer.is_valid():
+                user = serializer.object.get('user') or request.user
+                token = serializer.object.get('token')
+                response_data = jwt_response_payload_handler(token, user, request)
+                response = Response(response_data)
+                if api_settings.JWT_AUTH_COOKIE:
+                    expiration = (datetime.utcnow() +
+                                api_settings.JWT_EXPIRATION_DELTA)
+                    response.set_cookie(api_settings.JWT_AUTH_COOKIE,
+                                        token,
+                                        expires=expiration,
+                                        httponly=True)
+                return response
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
