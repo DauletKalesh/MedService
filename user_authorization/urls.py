@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import AdvancedUserViewSet
+from .views import AdvancedUserViewSet, LoginView
 
 urlpatterns = [
-    path('user', AdvancedUserViewSet.as_view({'post': 'create'})),
+    path('registration', AdvancedUserViewSet.as_view({'post': 'create'})),
+    path('login', LoginView.as_view()),
 ]
