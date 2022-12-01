@@ -7,6 +7,11 @@ from django.utils.translation import gettext_lazy as _
 # from global_vars.constants import GENDER_LIST
 # Create your models here.
 
+GENDER_LIST  = [
+    (0,  'Male'),
+    (1, 'Female'),
+    (2, 'Not selected')
+]
 
 class AdvancedUserManager(BaseUserManager):
     use_in_migrations = True
@@ -46,6 +51,8 @@ class AdvancedUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('Date joined'), auto_now_add=True)
     is_active = models.BooleanField(_('active'), default=True, blank=True)
     is_staff = models.BooleanField(_('is_staff'), default=False, blank=True)
+    is_blocked = models.BooleanField(_('is_blocked'), default=False, blank=True)
+    login_attempts = models.PositiveSmallIntegerField(_('login attempts'), default=0, blank=True)
 
     objects = AdvancedUserManager()
 
@@ -59,7 +66,7 @@ class AdvancedUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(AdvancedUser, on_delete=models.CASCADE, related_name='profile')
     birthday = models.DateField(null=True, blank=True)
-    # gender = models.PositiveIntegerField(choices=GENDER_LIST, default=None, null=True, blank=True)
+    gender = models.PositiveIntegerField(choices=GENDER_LIST, default=None, null=True, blank=True)
     gender = models.PositiveIntegerField(default=None, null=True, blank=True)
     avatar = models.ImageField()
 
