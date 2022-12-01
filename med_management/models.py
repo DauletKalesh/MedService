@@ -25,10 +25,9 @@ class Medical_history(models.Model):
 
 class Appointment(models.Model):
 
-    name = models.CharField(('Hospital name'), max_length=30, blank=True)
-    address = models.CharField(('Hospital name'), max_length=30, blank=True)
-    phone_number = models.CharField(('Phone number'), max_length=12, blank=True)
-    rating = models.FloatField(('rating'), default=0, blank=False)
+    appointment_reason = models.CharField(('Appointment reason'), max_length=30, blank=True)
+    appointment_date = models.DateTimeField(('Appointment date'))
+    appointment_status = models.CharField(('Appointment status'), max_length=15, blank=True)
 
     class Meta:
         verbose_name = ('appointment')
