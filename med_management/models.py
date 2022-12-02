@@ -12,6 +12,15 @@ class Hospital(models.Model):
         verbose_name = ('hospital')
         verbose_name_plural = ('Hospitals')
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'address': self.address,
+            'phone_number': self.phone_number,
+            'rating': self.rating,
+        }
+
 class Medical_history(models.Model):
 
     date_of_record = models.DateTimeField(('Date of record'), auto_now_add=True)
@@ -22,13 +31,29 @@ class Medical_history(models.Model):
         verbose_name = ('medical history')
         verbose_name_plural = ('Medical history')
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'date_of_record': self.date_of_record,
+            'symptoms': self.symptoms,
+            'diagnosis': self.diagnosis,
+        }
+
 
 class Appointment(models.Model):
 
     appointment_reason = models.CharField(('Appointment reason'), max_length=30, blank=True)
-    appointment_date = models.DateTimeField(('Appointment date'))
+    appointment_date = models.DateTimeField(('Appointment date'), auto_now_add=True)
     appointment_status = models.CharField(('Appointment status'), max_length=15, blank=True)
 
     class Meta:
         verbose_name = ('appointment')
         verbose_name_plural = ('Appointments')
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'appointment_reason': self.appointment_reason,
+            'appointment_date': self.appointment_date,
+            'appointment_status': self.appointment_status,
+        }
