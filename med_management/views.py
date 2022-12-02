@@ -1,9 +1,9 @@
 from django.shortcuts import render
 import json
 from django.http.response import JsonResponse
-from models import *
+from .models import *
 from django.views.decorators.csrf import csrf_exempt
-from serializers import *
+from .serializers import *
 # Create your views here.
 
 @csrf_exempt
@@ -13,7 +13,7 @@ def show_appointments(request, appointment_id):
     except Appointment.DoesNotExist as e:
         return JsonResponse({'message': str(e)})
     if request.method == 'GET':
-        return JsonResponse(Appointment.to_json())
+        return JsonResponse(appointment.to_json())
     elif request.method == 'PUT':
         data = json.loads(request.body)
         appointment.appointment_reason = data['appointment_reason']
@@ -41,5 +41,5 @@ def show_hospital(request):
 
 def show_medical_history(request):
     medical_histories = Medical_history.objects.all()
-    serializer = Medical_history(medical_histories, many=True)
+    serializer = Medical_historySerializer(medical_histories, many=True)
     return JsonResponse(serializer.data, safe=False)
