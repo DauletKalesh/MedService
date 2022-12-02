@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from global_utils.constants import GENDER_LIST
 # Create your models here.
 
-print(GENDER_LIST)
 
 class AdvancedUserManager(BaseUserManager):
     use_in_migrations = True
