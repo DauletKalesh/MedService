@@ -4,14 +4,10 @@ from django.dispatch import receiver
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-# from global_vars.constants import GENDER_LIST
+from global_utils.constants import GENDER_LIST
 # Create your models here.
 
-GENDER_LIST  = [
-    (0,  'Male'),
-    (1, 'Female'),
-    (2, 'Not selected')
-]
+print(GENDER_LIST)
 
 class AdvancedUserManager(BaseUserManager):
     use_in_migrations = True
