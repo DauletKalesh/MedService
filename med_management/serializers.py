@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from models import Hospital, Appointment, Medical_history
+from .models import Hospital, Appointment, Medical_history
 
 
 class HospitalSerializer(serializers.ModelSerializer):
