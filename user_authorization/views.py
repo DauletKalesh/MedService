@@ -1,7 +1,7 @@
 from rest_framework import generics, mixins, viewsets, status
 from rest_framework.views import Response, APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
-from .serializers import AdvancedUserSerializer
+from .serializers import AdvancedUserSerializer, ProfileSerializer
 from django.contrib.auth.hashers import check_password, make_password
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.views import JSONWebTokenAPIView
@@ -71,4 +71,7 @@ class LoginView(JSONWebTokenAPIView):
                 return response
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+class ProfileView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
