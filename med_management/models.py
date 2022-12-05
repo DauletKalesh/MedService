@@ -21,8 +21,16 @@ class Hospital(models.Model):
             'rating': self.rating,
         }
 
+
+class Specialization(models.Model):
+    name = models.CharField(max_length=50)
+
+
 class Medical_history(models.Model):
 
+    profile_detail = models.ForeignKey(
+                'user_authorization.ProfileDetail', on_delete=models.CASCADE, related_name='med_history',
+                blank=True, null=True)
     date_of_record = models.DateTimeField(('Date of record'), auto_now_add=True)
     symptoms = models.CharField(('Symptoms of the illness'), max_length=30, blank=True)
     diagnosis = models.CharField(('Diagnosis'), max_length=30, blank=True)
@@ -42,6 +50,10 @@ class Medical_history(models.Model):
 
 class Appointment(models.Model):
 
+    patient = models.ForeignKey('user_authorization.AdvancedUser', on_delete=models.SET_NULL,
+                    null=True, blank=True, related_name='patient')
+    doctor = models.ForeignKey('user_authorization.AdvancedUser', on_delete=models.SET_NULL,
+                    null=True, blank=True, related_name='doctor')
     appointment_reason = models.CharField(('Appointment reason'), max_length=30, blank=True)
     appointment_date = models.DateTimeField(('Appointment date'), null=True, blank=True)
     appointment_status = models.CharField(('Appointment status'), max_length=15, blank=True)
