@@ -13,7 +13,8 @@ from .models import *
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
-class AdvancedUserViewSet(viewsets.ViewSet):
+
+class AdvanscedUserViewSet(viewsets.ViewSet):
     permission_classes = (AllowAny,)
     serializer_class = AdvancedUserSerializer
 
