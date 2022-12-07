@@ -54,6 +54,14 @@ class AdvancedUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    @property
+    def is_doctor(self):
+        return 'doctor' in [group.name for group in self.groups.all()]
+
+    @property
+    def is_patient(self):
+        return 'patient' in [group.name for group in self.groups.all()]
+
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('Users')
