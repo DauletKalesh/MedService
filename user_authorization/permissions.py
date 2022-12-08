@@ -10,3 +10,13 @@ class IsProfileOwner(BasePermission):
     #     # queryset = getattr(view, 'get_queryset', None)
     #     queryset = self._queryset(view)
     #     return request.user.id == queryset.user.id
+
+class IsDoctor(BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_doctor
+
+class IsPatient(BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_patient

@@ -92,8 +92,9 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         print(request.user, request.user.id)
         instance = self.get_object()
         serializer = self.get_serializer(instance)
+        data = serializer.data
         if instance.user.is_doctor:
-            serializer.data.pop('patient_detail', None)
+            del data['patient_detail']
         if instance.user.is_patient:
-            serializer.data.pop('patient_detail', None)
-        return Response(serializer.data)
+            del data['doctor_detail']
+        return Response(data)

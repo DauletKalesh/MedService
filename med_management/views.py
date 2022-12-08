@@ -4,6 +4,7 @@ from django.http.response import JsonResponse
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
+from rest_framework.viewsets import ModelViewSet
 # Create your views here.
 
 @csrf_exempt
@@ -43,3 +44,20 @@ def show_medical_history(request):
     medical_histories = Medical_history.objects.all()
     serializer = Medical_historySerializer(medical_histories, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+class AppointmentApiView(ModelViewSet):
+    serializer_class = AppointmentSerializer
+    
+    def get_queryset(self):
+        if self.request.user.is_doctor:
+            return self.request.user.doctor_appointments.all()
+        elif self.request.user.is_patient:
+            return self.request.user.patient_appointments.all()
+    
+    # def get_serializer(self, *args, **kwargs):
+    #     if self.request.user.is_doctor:
+    #         return DoctorAppointmentSerializer
+    #     elif self.request.user.is_patient:
+    #         return PatientAppointmentSerializer
+    #     return self.serializer_class
+

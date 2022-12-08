@@ -8,7 +8,7 @@ class AdvancedUserSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=100)
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
-    password = serializers.CharField(max_length=128)
+    password = serializers.CharField(max_length=128, write_only=True)
 
     def create(self, validated_data):
         return AdvancedUser.objects.create_user(**validated_data)

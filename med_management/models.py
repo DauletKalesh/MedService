@@ -51,9 +51,9 @@ class Medical_history(models.Model):
 class Appointment(models.Model):
 
     patient = models.ForeignKey('user_authorization.AdvancedUser', on_delete=models.SET_NULL,
-                    null=True, blank=True, related_name='patient')
+                    null=True, blank=True, related_name='patient_appointments')
     doctor = models.ForeignKey('user_authorization.AdvancedUser', on_delete=models.SET_NULL,
-                    null=True, blank=True, related_name='doctor')
+                    null=True, blank=True, related_name='doctor_appointments')
     appointment_reason = models.CharField(('Appointment reason'), max_length=30, blank=True)
     appointment_date = models.DateTimeField(('Appointment date'), null=True, blank=True)
     appointment_status = models.CharField(('Appointment status'), max_length=15, blank=True)
