@@ -53,11 +53,15 @@ class AppointmentApiView(ModelViewSet):
             return self.request.user.doctor_appointments.all()
         elif self.request.user.is_patient:
             return self.request.user.patient_appointments.all()
-    
-    # def get_serializer(self, *args, **kwargs):
-    #     if self.request.user.is_doctor:
-    #         return DoctorAppointmentSerializer
-    #     elif self.request.user.is_patient:
-    #         return PatientAppointmentSerializer
-    #     return self.serializer_class
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        if self.request.user.is_patient:
+            instance.patient = self.request.user
+            instance.save()
+    def get_serializer(self, *args, **kwargs):
+        if self.request.user.is_doctor:
+            return DoctorAppointmentSerializer
+        elif self.request.user.is_patient:
+            return PatientAppointmentSerializer
+        return self.serializer_class
 
