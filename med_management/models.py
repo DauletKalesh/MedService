@@ -1,5 +1,6 @@
 from django.db import models
-
+from user_authorization.models import *
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Hospital(models.Model):
 
@@ -20,6 +21,36 @@ class Hospital(models.Model):
             'phone_number': self.phone_number,
             'rating': self.rating,
         }
+
+
+class Comment(models.Model):
+    hospital_id = models.ForeignKey(Hospital, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(AdvancedUser, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(default=0, validators=[MaxValueValidator(5),MinValueValidator(0)])
+    approved = models.BooleanField(default=False)
+
+    def approve(self):
+        self.approved = True
+        self.save()
+
+    class Meta:
+        verbose_name = ('comment')
+        verbose_name_plural = ('Comment')
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'hospital': self.hospital_id,
+            'author': self.author,
+            'text': self.text,
+            'rating': self.rating,
+            'date_created': self.rating,
+            'approved': self.approved
+        }
+
+
 
 
 class Specialization(models.Model):

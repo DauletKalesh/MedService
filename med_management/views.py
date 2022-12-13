@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import json
 from django.http.response import JsonResponse
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 
 @csrf_exempt
@@ -64,4 +66,43 @@ class AppointmentApiView(ModelViewSet):
         elif self.request.user.is_patient:
             return PatientAppointmentSerializer
         return self.serializer_class
+
+
+class CommentApiView(ModelViewSet):
+    serializer_class = CommentSerializer
+
+    def list(self, request):
+        queryset = Comment.objects.all()
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def list_by_hospital(self, request, h_id):
+        queryset = Comment.objects.filter(hospital_id = h_id)#self.request.hospital_id)
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = CommentSerializer(data = request.data)
+        if serializer.is_valid(raise_excetion = True):
+            comment_obj = serializer.save()
+            return Response({"Success": "Comment {} created!".format(comment_obj.author)})
+        return Response(serializer.obj.errors, status = status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        serializer = CommentSerializer(data = request.data)
+        serializer.is_valid()
+        serializer.update(Comment.objects.get(pk=pk), request.data)
+        return Response({"Success": "Comment updated!"})
+    
+    def delete(request, pk):
+        item = get_object_or_404(Comment, pk=pk)
+        item.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
+        
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        if self.request.user.is_patient:
+            instance.author = self.request.user
+            instance.save()
+
 

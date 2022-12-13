@@ -1,6 +1,6 @@
 from rest_framework import serializers
 # from user_authorization.views import AdvancedUserSerializer
-from .models import Hospital, Appointment, Medical_history
+from .models import Hospital, Appointment, Medical_history, Comment
 from user_authorization.models import AdvancedUser
 
 class UserSerializer(serializers.ModelSerializer):
@@ -66,3 +66,10 @@ class Medical_historySerializer(serializers.ModelSerializer):
         fields = ('id', 'date_of_record', 'symptoms', 'diagnosis')
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    hospital_id = HospitalSerializer()
+    author = UserSerializer()
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'hospital_id', 'author', 'text', 'date_created', 'rating', 'approved')
