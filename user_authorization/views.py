@@ -11,9 +11,22 @@ from datetime import datetime
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from .models import *
+from django.core.mail import send_mail
+from django.conf import settings
+import random
 # Create your views here.
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
+
+
+def send_verification(serializer):
+    num = random.randint(100000, 999999)
+    send_mail(
+                subject='Registration code',
+                message='Please write this code in form! {}'.format(num),
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[serializer.email])
+    
 
 
 class AdvanscedUserViewSet(viewsets.ViewSet):
@@ -25,6 +38,11 @@ class AdvanscedUserViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            send_mail(
+                subject='Registration success',
+                message='You are registered!',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[request.data.get('email')])
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # def retrieve(self, request, id):
