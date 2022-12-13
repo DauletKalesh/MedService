@@ -18,5 +18,9 @@ services:
         - POSTGRES_NAME=postgres
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
+        - EMAIL_HOST=smtp.gmail.com
+        - EMAIL_HOST_USER=hospital.kz1@gmail.com
+        - EMAIL_HOST_PASSWORD=vioypwdpzbfmftym
+        - RECIPIENT_ADDRESS=TheRecieverOfTheMails
       depends_on:
         - db
