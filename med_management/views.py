@@ -7,6 +7,12 @@ from .serializers import *
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from user_authorization.models import * 
+import jinja2
+import pdfkit
+from datetime import datetime
+from .pdf_service import create_pdf
+from django.http import HttpResponse
 # Create your views here.
 
 @csrf_exempt
@@ -46,6 +52,16 @@ def show_medical_history(request):
     medical_histories = Medical_history.objects.all()
     serializer = Medical_historySerializer(medical_histories, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+def get_medical_history_pdf(request, uid):
+    if request.method == 'GET':
+        user_data = ProfileDetail.objects.get(id=uid)
+        create_pdf(user_data)
+        response = HttpResponse('pdf_generated.pdf', content_type='application/pdf') 
+        response['Content-Disposition'] = 'filename="заявление на открытие счета.pdf"' 
+        return response
+
+
 
 class AppointmentApiView(ModelViewSet):
     serializer_class = AppointmentSerializer
@@ -94,7 +110,7 @@ class CommentApiView(ModelViewSet):
         serializer.update(Comment.objects.get(pk=pk), request.data)
         return Response({"Success": "Comment updated!"})
     
-    def delete(request, pk):
+    def delete(self, request, pk):
         item = get_object_or_404(Comment, pk=pk)
         item.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
