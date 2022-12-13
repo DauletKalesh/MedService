@@ -67,9 +67,24 @@ class Medical_historySerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    hospital_id = HospitalSerializer()
-    author = UserSerializer()
+    # hospital = HospitalSerializer(read_only=True)
+    # author = UserSerializer(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ('id', 'hospital_id', 'author', 'text', 'date_created', 'rating', 'approved')
+        fields = ('id', 'hospital', 'author', 'text', 'date_created', 'rating', 'approved')
+    
+    def create(self, validated_data):
+        print(validated_data)
+        # try:
+        # hospital = Hospital.objects.get(id=validated_data.get('hospital'))
+        # except :
+        #     return serializers.ValidationError('Wrong hospital id')
+        comment = Comment.objects.create(
+                            hospital = validated_data.get('hospital'),
+                            text=validated_data.get('text'),
+                            rating=validated_data.get('rating')
+                    )
+        comment.author = validated_data.get('author')
+        comment.save()
+        return comment

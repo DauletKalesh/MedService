@@ -21,14 +21,20 @@ class Hospital(models.Model):
             'phone_number': self.phone_number,
             'rating': self.rating,
         }
+    
+    def set_rating(self):
+        avg_rating = \
+            sum([i.rating for i in self.comments.all()])/len(self.comments.all())
+        self.rating = avg_rating
+        self.save()
 
 
 class Comment(models.Model):
-    hospital_id = models.ForeignKey(Hospital, related_name='comments', on_delete=models.CASCADE)
-    author = models.ForeignKey(AdvancedUser, on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Hospital, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(AdvancedUser, on_delete=models.CASCADE, null=True, blank=True)
     text = models.TextField(blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField(default=0, validators=[MaxValueValidator(5),MinValueValidator(0)])
+    rating = models.IntegerField(default=1, validators=[MaxValueValidator(5),MinValueValidator(1)])
     approved = models.BooleanField(default=False)
 
     def approve(self):

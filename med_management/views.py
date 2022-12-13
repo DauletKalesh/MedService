@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 # Create your views here.
 
 @csrf_exempt
@@ -70,6 +70,8 @@ class AppointmentApiView(ModelViewSet):
 
 class CommentApiView(ModelViewSet):
     serializer_class = CommentSerializer
+    permission_classes = [permissions.AllowAny]
+    queryset = queryset = Comment.objects.all()
 
     def list(self, request):
         queryset = Comment.objects.all()
@@ -83,18 +85,18 @@ class CommentApiView(ModelViewSet):
 
     def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data = request.data)
-        if serializer.is_valid(raise_excetion = True):
-            comment_obj = serializer.save()
+        if serializer.is_valid(raise_exception = True):
+            comment_obj = self.perform_create(serializer)
             return Response({"Success": "Comment {} created!".format(comment_obj.author)})
-        return Response(serializer.obj.errors, status = status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         serializer = CommentSerializer(data = request.data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception = True)
         serializer.update(Comment.objects.get(pk=pk), request.data)
         return Response({"Success": "Comment updated!"})
     
-    def delete(request, pk):
+    def delete(self, request, pk):
         item = get_object_or_404(Comment, pk=pk)
         item.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
@@ -104,5 +106,7 @@ class CommentApiView(ModelViewSet):
         if self.request.user.is_patient:
             instance.author = self.request.user
             instance.save()
+            instance.hospital.set_rating()
+        return instance
 
 
