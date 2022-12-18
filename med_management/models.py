@@ -65,8 +65,8 @@ class Specialization(models.Model):
 
 class Medical_history(models.Model):
 
-    profile_detail = models.ForeignKey(
-                'user_authorization.ProfileDetail', on_delete=models.CASCADE, related_name='med_history',
+    profile = models.ForeignKey(
+                'user_authorization.Profile', on_delete=models.CASCADE, related_name='med_history',
                 blank=True, null=True)
     date_of_record = models.DateTimeField(('Date of record'), auto_now_add=True)
     symptoms = models.CharField(('Symptoms of the illness'), max_length=30, blank=True)

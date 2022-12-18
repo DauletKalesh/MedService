@@ -55,7 +55,7 @@ def show_medical_history(request):
 
 def get_medical_history_pdf(request, uid):
     if request.method == 'GET':
-        user_data = ProfileDetail.objects.get(id=uid)
+        user_data = Profile.objects.get(id=uid)
         create_pdf(user_data)
         response = HttpResponse('pdf_generated.pdf', content_type='application/pdf') 
         response['Content-Disposition'] = 'filename="заявление на открытие счета.pdf"' 
@@ -87,10 +87,10 @@ class AppointmentApiView(ModelViewSet):
 class CommentApiView(ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [permissions.AllowAny]
-    queryset = queryset = Comment.objects.all()
+    queryset = Comment.objects.all()
 
     def list(self, request):
-        queryset = Comment.objects.all()
+        queryset = Comment.objects.all().filter(author=request.user)
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 

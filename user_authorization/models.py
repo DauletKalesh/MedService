@@ -67,7 +67,11 @@ class AdvancedUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('Users')
 
 class Profile(models.Model):
+
     def upload_image(self, filename):
+        return f'user_{self.user.id}/{filename}'
+
+    def upload_file(self, filename):
         return f'user_{self.user.id}/{filename}'
 
     DEFAULT_IMG = '../global_utils/img/unknown.png'
@@ -76,21 +80,6 @@ class Profile(models.Model):
     birthday = models.DateField(null=True, blank=True)
     gender = models.PositiveIntegerField(choices=GENDER_LIST, default=None, null=True, blank=True)
     avatar = models.ImageField(upload_to=upload_image, default=DEFAULT_IMG)
-    detail = models.OneToOneField('ProfileDetail',  on_delete=models.CASCADE, related_name='profile', 
-    null=True, blank=True)
-
-
-@receiver(post_save, sender=AdvancedUser)
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        profile = Profile.objects.create(user=instance)
-        profile.detail = ProfileDetail.objects.create()
-        profile.save()
-    
-class ProfileDetail(models.Model):
-
-    def upload_file(self, filename):
-        return f'user_{self.profile.user.id}/{filename}'
     
     iin = models.CharField(max_length=12, null=True, blank=True)
     
@@ -101,3 +90,10 @@ class ProfileDetail(models.Model):
         'med_management.Specialization', on_delete=models.SET_NULL, related_name='doctor_profile',
         null=True, blank=True)
     license_file = models.FileField(upload_to=upload_file, blank=True, null=True)
+
+
+@receiver(post_save, sender=AdvancedUser)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        profile = Profile.objects.create(user=instance)
+    
