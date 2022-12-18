@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'user_authorization',
     'med_management',
+    'global_utils',
 ]
 
 MIDDLEWARE = [
@@ -171,7 +172,7 @@ JWT_AUTH = {
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=100),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 
