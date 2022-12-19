@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin, Group
 from django.utils.translation import gettext_lazy as _
 from global_utils.constants import GENDER_LIST
 # Create your models here.
@@ -21,6 +21,9 @@ class AdvancedUserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        roles = extra_fields.get('roles')
+        for role in roles:
+            user.groups.add(Group.objects.get(pk=role))
         return user
 
     def create_user(self, email, password=None, **extra_fields):
