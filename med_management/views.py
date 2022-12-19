@@ -1,14 +1,16 @@
-from django.shortcuts import render, get_object_or_404
-import json
 from django.http.response import JsonResponse
-from .models import *
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import *
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.shortcuts import render, get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status, permissions, views
 from user_authorization.permissions import IsPatient
 from user_authorization.models import * 
+from .serializers import *
+from .models import *
+import json
 from datetime import datetime
 from .pdf_service import create_pdf
 from django.http import HttpResponse
@@ -60,6 +62,14 @@ def get_medical_history_pdf(request, uid):
         response['Content-Disposition'] = 'filename="заявление на открытие счета.pdf"' 
         return response
 
+class SpecializationAPIView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    @method_decorator(cache_page(60*60))
+    def get(self, request):
+        specialization = Specialization.objects.all()
+        serializer = SpecializationSerializer(instance=specialization, many=True)
+        return Response(serializer.data)
 
 
 class AppointmentApiView(ModelViewSet):
