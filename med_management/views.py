@@ -7,9 +7,8 @@ from .serializers import *
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from user_authorization.permissions import IsPatient
 from user_authorization.models import * 
-import jinja2
-import pdfkit
 from datetime import datetime
 from .pdf_service import create_pdf
 from django.http import HttpResponse
@@ -86,7 +85,7 @@ class AppointmentApiView(ModelViewSet):
 
 class CommentApiView(ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsPatient]
     queryset = Comment.objects.all()
 
     def list(self, request):
