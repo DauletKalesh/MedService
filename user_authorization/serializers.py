@@ -71,7 +71,7 @@ class PatientProfileSerializer(serializers.ModelSerializer):
     username = serializers.StringRelatedField(source='user.username')
     first_name = serializers.StringRelatedField(source='user.first_name')
     last_name = serializers.StringRelatedField(source='user.last_name')
-    # med_history = Medical_historySerializer(many=True)
+    med_history = Medical_historySerializer(many=True)
     class Meta:
         model = Profile
         exclude = ('id', 'user', 'hospital', 'specialization', 'license_file')

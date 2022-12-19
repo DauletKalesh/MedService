@@ -16,8 +16,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.http.request import HttpRequest
+import logging
 # Create your views here.
 
+logger = logging.getLogger(__name__)
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 
@@ -45,7 +47,8 @@ class AdvanscedUserViewSet(viewsets.ViewSet):
                 message='You are registered!',
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[request.data.get('email')])
-            return Response(serializer.data)
+            logger.info(f"{request.data.get('username')} succesfully registered")
+            return Response({"message": "Account succesfully created"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # def retrieve(self, request, id):
     #     ser
@@ -129,7 +132,8 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         else:
             serializer = PatientProfileSerializer(instance=instance, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            instance = serializer.save()
+            logger.info(f"{request.data.get('username')} profile updated response - {serializer.data}")
             return Response({'message': 'updated'})
         print(serializer.errors)
         return Response({'message': 'wrong datas'}, status=status.HTTP_400_BAD_REQUEST)
