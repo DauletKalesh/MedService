@@ -24,4 +24,4 @@ urlpatterns = [
     path('user_authorization/', include('user_authorization.urls')),
     path('medical_management/', include('med_management.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
-    + static('global_utils', document_root=os.path.join(settings.BASE_DIR, 'global_utils/img'))
+    + static('global_utils/img', document_root=os.path.join(settings.BASE_DIR, 'global_utils/img'))
