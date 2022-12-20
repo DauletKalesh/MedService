@@ -1,17 +1,21 @@
-from django.shortcuts import render, get_object_or_404
-import json
 from django.http.response import JsonResponse
-from .models import *
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import *
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.shortcuts import render, get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status, permissions, views
 from user_authorization.permissions import IsPatient
 from user_authorization.models import * 
+from .serializers import *
+from .models import *
+import json
 from datetime import datetime
 from .pdf_service import create_pdf
 from django.http import HttpResponse
+from django.core.mail import EmailMessage
+from django.conf import settings
 # Create your views here.
 
 @csrf_exempt
@@ -58,9 +62,23 @@ def get_medical_history_pdf(request, uid):
         pdfstr = create_pdf(user_data)
         response = HttpResponse(content_type='application/pdf')
         response.write(pdfstr)
-        response['Content-Disposition'] = 'filename=invoice.pdf'
+        response['Content-Disposition'] = 'attachment; filename=med_history_{}.pdf'.format(uid)
         return response
 
+def send_pdf_to_mail(file, first_name, email):
+    msg = EmailMessage("Patient's medical history", 'Dear {} here is your medical history'.format(first_name), settings.EMAIL_HOST_USER, [email])
+    msg.content_subtype = "html"  
+    msg.attach_file('./Instructions.pdf')
+    msg.send()
+
+class SpecializationAPIView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    @method_decorator(cache_page(60*60))
+    def get(self, request):
+        specialization = Specialization.objects.all()
+        serializer = SpecializationSerializer(instance=specialization, many=True)
+        return Response(serializer.data)
 
 
 

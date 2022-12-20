@@ -1,4 +1,15 @@
 services:
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+  celery:
+    build: .
+    command: celery -A MedService worker -l INFO
+    volumes:
+        - .:/code
+    depends_on:
+        - web
+        - redis
   db:
     image: postgres
     volumes:
@@ -24,3 +35,4 @@ services:
         - RECIPIENT_ADDRESS=TheRecieverOfTheMails
       depends_on:
         - db
+        - redis

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import show_appointments, show_medical_history, show_hospital, AppointmentApiView, \
-    CommentApiView,get_medical_history_pdf
+    CommentApiView,get_medical_history_pdf, SpecializationAPIView
 from rest_framework.routers import  DefaultRouter
 
 router = DefaultRouter()
@@ -20,5 +20,6 @@ urlpatterns = [
     # path('appointment/<int:appointment_id>', show_appointments),
     #r'^my-pdf/$', PDFView.as_view(template_name='my-pdf.html'), name='my-pdf'
     #path(r'^my-pdf/$', PDFView.as_view(template_name='basic-template.html'), name='my-pdf')
-    path('medhistory/to_pdf/<int:uid>', get_medical_history_pdf)
+    path('medhistory/to_pdf/<int:uid>', get_medical_history_pdf),
+    path('specializations', SpecializationAPIView.as_view())
 ] + router.urls
