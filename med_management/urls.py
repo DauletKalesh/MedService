@@ -1,15 +1,18 @@
 from django.urls import path
-from .views import show_appointments, show_medical_history, show_hospital, AppointmentApiView, \
-    CommentApiView,get_medical_history_pdf, SpecializationAPIView
+from .views import show_appointments, AppointmentApiView, \
+    CommentApiView,get_medical_history_pdf, SpecializationAPIView, HospitalViewSet,\
+        MedHistoryViewSet
 from rest_framework.routers import  DefaultRouter
 
 router = DefaultRouter()
 router.register('appointments', AppointmentApiView, 'appointment')
 
+router.register('hospitals', HospitalViewSet, basename='hospitals')
+router.register('medical_history', MedHistoryViewSet, basename='medical_history')
 
 urlpatterns = [
-    path('hospital', show_hospital),
-    path('medical_history', show_medical_history),
+    # path('hospital', show_hospital),
+    # path('medical_history', show_medical_history),
     path('comments', CommentApiView.as_view({'get':'list',
                                              'post':'post'})),
     path('comments/<int:h_id>', CommentApiView.as_view({'get':'list_by_hospital'})),

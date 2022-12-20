@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status, permissions, views
+from rest_framework import status, permissions, views, mixins, viewsets
 from user_authorization.permissions import IsPatient
 from user_authorization.models import * 
 from .serializers import *
@@ -45,16 +45,35 @@ def show_appointments(request, appointment_id):
         return JsonResponse({'message': 'deleted'}, status=204)
 
 
-def show_hospital(request):
-    hospitals = Hospital.objects.all()
-    serializer = HospitalSerializer(hospitals, many=True)
-    return JsonResponse(serializer.data, safe=False)
+class HospitalViewSet(mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.ListModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = Hospital.objects.all()
+    serializer_class = HospitalSerializer
+    permission_classes = [permissions.IsAdminUser, ]
 
+# def show_hospital(request):
+#     hospitals = Hospital.objects.all()
+#     serializer = HospitalSerializer(hospitals, many=True)
+#     return JsonResponse(serializer.data, safe=False)
 
-def show_medical_history(request):
-    medical_histories = Medical_history.objects.all()
-    serializer = Medical_historySerializer(medical_histories, many=True)
-    return JsonResponse(serializer.data, safe=False)
+class MedHistoryViewSet(mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.ListModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = Medical_history.objects.all()
+    serializer_class = Medical_historySerializer
+    permission_classes = [permissions.IsAdminUser, ]
+
+# def show_medical_history(request):
+#     medical_histories = Medical_history.objects.all()
+#     serializer = Medical_historySerializer(medical_histories, many=True)
+#     return JsonResponse(serializer.data, safe=False)
 
 def get_medical_history_pdf(request, uid):
     if request.method == 'GET':
