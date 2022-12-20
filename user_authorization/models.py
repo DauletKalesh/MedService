@@ -80,8 +80,10 @@ class Profile(models.Model):
     birthday = models.DateField(null=True, blank=True)
     gender = models.PositiveIntegerField(choices=GENDER_LIST, default=None, null=True, blank=True)
     avatar = models.ImageField(upload_to=upload_image, default=DEFAULT_IMG)
-    
+
     iin = models.CharField(max_length=12, null=True, blank=True)
+
+    # med_history_file = models.FileField(upload_to=upload_file)
     
     hospital = models.ForeignKey(
         'med_management.Hospital', on_delete=models.SET_NULL, related_name='doctor_profile', 
