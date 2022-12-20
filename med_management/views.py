@@ -62,14 +62,9 @@ def get_medical_history_pdf(request, uid):
         pdfstr = create_pdf(user_data)
         response = HttpResponse(content_type='application/pdf')
         response.write(pdfstr)
-        response['Content-Disposition'] = 'attachment; filename=med_history_{}.pdf'.format(uid)
+        response['Content-Disposition'] = 'filename=med_history_{}.pdf'.format(uid)
         return response
 
-def send_pdf_to_mail(file, first_name, email):
-    msg = EmailMessage("Patient's medical history", 'Dear {} here is your medical history'.format(first_name), settings.EMAIL_HOST_USER, [email])
-    msg.content_subtype = "html"  
-    msg.attach_file('./Instructions.pdf')
-    msg.send()
 
 class SpecializationAPIView(views.APIView):
     permission_classes = [permissions.AllowAny]
@@ -96,7 +91,7 @@ class AppointmentApiView(ModelViewSet):
         if self.request.user.is_patient:
             instance.patient = self.request.user
             instance.save()
-    def get_serializer(self, *args, **kwargs):
+    def get_serializer_class(self):
         if self.request.user.is_doctor:
             return DoctorAppointmentSerializer
         elif self.request.user.is_patient:

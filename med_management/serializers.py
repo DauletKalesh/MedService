@@ -38,7 +38,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
         appointment = Appointment.objects.create(
             appointment_reason = validated_data.get('appointment_reason'),
             appointment_date = validated_data.get('appointment_date'),
-            appointment_status = validated_data.get('appointment_status')
+            appointment_status = validated_data.get('appointment_status'),
+            doctor = validated_data.get('doctor')
         )
 
         return appointment
@@ -47,7 +48,7 @@ class DoctorAppointmentSerializer(serializers.ModelSerializer):
     # patient_first_name = serializers.CharField(source='patient.first_name', read_only=True)
     # patient_last_name = serializers.CharField(source='patient.last_name', read_only=True)
     # patient_email = serializers.EmailField(source='patient.email', read_only=True)
-    patient = UserSerializer()
+    # patient = UserSerializer()
     class Meta:
         model = Appointment
         fields = ('id', 'patient', 
@@ -58,7 +59,7 @@ class PatientAppointmentSerializer(serializers.ModelSerializer):
 #     doctor_first_name = serializers.CharField(source='doctor.first_name')
 #     doctor_last_name = serializers.CharField(source='doctor.last_name')
 #     doctor_email = serializers.EmailField(source='doctor.email')
-    doctor = UserSerializer()
+    # doctor = UserSerializer()
     class Meta:
         model = Appointment
         fields = ('id', 'doctor', 
