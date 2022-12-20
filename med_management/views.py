@@ -55,10 +55,13 @@ def show_medical_history(request):
 def get_medical_history_pdf(request, uid):
     if request.method == 'GET':
         user_data = Profile.objects.get(id=uid)
-        create_pdf(user_data)
-        response = HttpResponse('pdf_generated.pdf', content_type='application/pdf') 
-        response['Content-Disposition'] = 'filename="заявление на открытие счета.pdf"' 
+        pdfstr = create_pdf(user_data)
+        response = HttpResponse(content_type='application/pdf')
+        response.write(pdfstr)
+        response['Content-Disposition'] = 'filename=invoice.pdf'
         return response
+
+
 
 
 
