@@ -12,7 +12,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def avatar_img(self, obj):
         if hasattr(obj.avatar, 'url'):
-            return format_html('<img src="{}" />'.format(getattr(obj.avatar, 'url')))
+            return format_html('<img src="{}" width = 50/>'.format(getattr(obj.avatar, 'url')))
         return None
 
     avatar_img.short_description = 'Image'
