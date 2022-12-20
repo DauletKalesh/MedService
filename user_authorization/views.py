@@ -12,6 +12,7 @@ from datetime import datetime
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from .models import *
+from .tasks import send_email_notification
 from django.core.mail import send_mail
 from django.conf import settings
 import random
@@ -42,10 +43,9 @@ class AdvanscedUserViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            send_mail(
+            send_email_notification.delay(
                 subject='Registration success',
                 message='You are registered!',
-                from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[request.data.get('email')])
             logger.info(f"{request.data.get('username')} succesfully registered")
             return Response({"message": "Account succesfully created"})
