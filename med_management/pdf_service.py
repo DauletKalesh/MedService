@@ -13,13 +13,10 @@ def create_pdf(user_data):
     last_name = user_data.user.last_name
     email = user_data.user.email
     date = datetime.today().strftime("%d %b, %Y")
-    date_of_record = 'frw'
-    symptoms = 'dfdgdd'
-    diagnosis = 'dslkdfjkldfjkl'
 
 
     data = {'first_name': first_name, 'last_name': last_name, 'email': email, 'date': date,
-           'date_of_record': date_of_record, 'symptoms': symptoms, 'diagnosis':diagnosis, 'medical_history': medical_history,}
+              'medical_history': medical_history,}
     
     template = get_template('./pdf_structure.rml')
     xmlstring = template.render(data)

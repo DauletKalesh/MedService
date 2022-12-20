@@ -1,0 +1,219 @@
+[
+    {
+      "model": "med_management.hospital", 
+      "pk": 1,
+      "fields": {
+        "name": "City Hospital No1",
+        "address": "Tole bi 59",
+        "phone_number": "+77273456789"
+      }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 2,
+        "fields": {
+          "name": "City Hospital No2",
+          "address": "Seifullina 72",
+          "phone_number": "+77271234567"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 3,
+        "fields": {
+          "name": "City Hospital No3",
+          "address": "Samal 2, 88",
+          "phone_number": "+77274444444"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 4,
+        "fields": {
+          "name": "City Hospital No33",
+          "address": "Samal 111",
+          "phone_number": "+77274578245"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 5,
+        "fields": {
+          "name": "City Hospital No34",
+          "address": "Samal 2, 89",
+          "phone_number": "+77274444974"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 6,
+        "fields": {
+          "name": "Hospital ABC for children",
+          "address": "Kerey Zhanibek Handar 8",
+          "phone_number": "+77274495030"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 7,
+        "fields": {
+          "name": "Dr Horton`s Hospital",
+          "address": "Dombrovskogo 12",
+          "phone_number": "+77274444544"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 8,
+        "fields": {
+          "name": "Klinika dr. Konovalova",
+          "address": "Kurmangazy 656",
+          "phone_number": "+77274334344"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 9,
+        "fields": {
+          "name": "HOSPITAL NUMBER ONE",
+          "address": "Aiteke bi 45",
+          "phone_number": "+7727545444"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 10,
+        "fields": {
+          "name": "Hospital Emdel",
+          "address": "EFRKGRRG",
+          "phone_number": "+7727443444"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 11,
+        "fields": {
+          "name": "City Hospital No4",
+          "address": "AlFarabi 134",
+          "phone_number": "+77277863924"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 12,
+        "fields": {
+          "name": "City Hospital No5",
+          "address": "Saina 46",
+          "phone_number": "+77279999999"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 13,
+        "fields": {
+          "name": "City Hospital No6",
+          "address": "Kazybek bi 67",
+          "phone_number": "+77271275463"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 14,
+        "fields": {
+          "name": "City Hospital No7",
+          "address": "Samal 1",
+          "phone_number": "+77274879903"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 15,
+        "fields": {
+          "name": "City Hospital No8",
+          "address": "Bauyrzhan Momyshuly st. 89",
+          "phone_number": "+77273008625"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 16,
+        "fields": {
+          "name": "City Hospital No9",
+          "address": "Raiymbek Batyr st. 66",
+          "phone_number": "+77275641722"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 17,
+        "fields": {
+          "name": "City Hospital No10",
+          "address": "Abay 487a",
+          "phone_number": "+77273221795"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 18,
+        "fields": {
+          "name": "Almaty MedService",
+          "address": "Dostyq 45",
+          "phone_number": "+77276924730"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 19,
+        "fields": {
+          "name": "Halyk Medical",
+          "address": "Turgut Ozala 79",
+          "phone_number": "+77275555555"
+        }
+    },
+    {
+        "model": "med_management.hospital", 
+        "pk": 20,
+        "fields": {
+          "name": "Mediker",
+          "address": "Satbayeva 62",
+          "phone_number": "+77276666666"
+        }
+    },
+    { 
+      "model": "med_management.specialization", 
+      "pk": 1, 
+      "fields": {
+          "name": "therapist" 
+      }
+    }, 
+    { 
+      "model": "med_management.specialization", 
+      "pk": 2, 
+      "fields": {
+          "name": "onkolog" 
+      }
+    }, 
+    { 
+      "model": "med_management.specialization", 
+      "pk": 3, 
+      "fields": {
+          "name": "nutriciolog" 
+      }
+    },
+    { 
+      "model": "auth.group", 
+      "pk": 1, 
+      "fields": {
+          "name": "patient" 
+      }
+    }, 
+    { 
+      "model": "auth.group", 
+      "pk": 2, 
+      "fields": {
+          "name": "doctor" 
+      }
+    }
+  ]
+
+
