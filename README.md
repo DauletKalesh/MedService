@@ -15,3 +15,4 @@
 
 ## Developer
 * [Kalesh Daulet](https://github.com/DauletKalesh/)
+* [Zarina Abildasheva](https://github.com/zarinaagoo)
